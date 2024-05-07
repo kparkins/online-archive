@@ -1,0 +1,31 @@
+---
+- name: Setup MongoDB Atlas Cluster
+  hosts: all
+  gather_facts: no
+  vars:
+    mongo_username: ""
+    mongo_password: ""
+    mongo_database_name: ""
+    mongo_collection_name: ""
+    mongo_connection_string: ""
+    local_data_file: "../data/student_grades.json"
+    local_js_file: "../data/fix-dates.js"
+
+  tasks:
+  - name: Import data into MongoDB using mongoimport
+    command: >
+      mongoimport --uri "{{ mongo_connection_string }}/{{ mongo_database_name }}"
+                  --username "{{ mongo_username }}"
+                  --password "{{ mongo_password }}"
+                  --collection "{{ mongo_collection_name }}"
+                  --file "{{ local_data_file }}"
+                  --type json
+
+  - name: Execute JavaScript file using mongosh
+    command: >
+      mongosh "{{ mongo_connection_string }}/{{ mongo_database_name }}"
+              --file "{{ local_js_file }}"
+              --username "{{ mongo_username }}"
+              --password "{{ mongo_password }}"
+
+

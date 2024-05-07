@@ -1,0 +1,19 @@
+---
+- name: Count Documents in MongoDB Atlas
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Count Un-archived Documents
+      shell: |
+        mongo "mongodb+srv://{{ cluster_host }}/test" --eval 'db.movies.count()'
+      register: unarchived_count
+
+    - name: Count Archived Documents
+      shell: |
+        mongo "mongodb+srv://{{ cluster_host }}/archive" --eval 'db.movies.count()'
+      register: archived_count
+
+    - debug:
+        msg: "Un-archived documents: {{ unarchived_count.stdout }}, Archived documents: {{ archived_count.stdout }}"
+
