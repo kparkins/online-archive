@@ -9,7 +9,8 @@
     mongo_collection_name: ""
     mongo_connection_string: ""
     local_data_file: "../data/student_grades.json"
-    local_js_file: "../data/fix-dates.js"
+    local_fix_dates_file: "../data/fix-dates.js"
+    local_create_index_file: "../data/create-index.js"
 
   tasks:
   - name: Import data into MongoDB using mongoimport
@@ -21,11 +22,17 @@
                   --file "{{ local_data_file }}"
                   --type json
 
-  - name: Execute JavaScript file using mongosh
+  - name: Execute the fix-dates.js JavaScript file using mongosh
     command: >
       mongosh "{{ mongo_connection_string }}/{{ mongo_database_name }}"
-              --file "{{ local_js_file }}"
+              --file "{{ local_fix_dates_file }}"
               --username "{{ mongo_username }}"
               --password "{{ mongo_password }}"
 
+  - name: Execute create-index.js JavaScript file using mongosh
+    command: >
+      mongosh "{{ mongo_connection_string }}/{{ mongo_database_name }}"
+              --file "{{ local_create_index_file }}"
+              --username "{{ mongo_username }}"
+              --password "{{ mongo_password }}"
 
