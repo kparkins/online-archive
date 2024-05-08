@@ -53,3 +53,10 @@ variable "atlas_archive_date_field" {
     type = string
 }
 
+variable "atlas_archive_partition_fields" {
+    description = "List of partition fields and their order"
+    type = list(object({
+        field_name = string
+        order      = number
+    }))
+}
