@@ -8,6 +8,7 @@ First, make sure you have `ansible`, `terraform`, `mongosh` and `mongoimport` in
 
 Next, copy the tfvars file and fill it in with your details.
 ```bash
+cd terraform
 cp atlas.tfvars.json.sample atlas.tfvars.json
 ```
 
