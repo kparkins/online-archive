@@ -24,7 +24,6 @@ It will take around 10-12 minutes to setup the cluster.
 ## Cleanup
 
 Run the corresponding `terraform destroy` command to cleanup all the resources.
-
 ```bash
 terraform destroy -var-file=atlas.tfvars.json
 ```

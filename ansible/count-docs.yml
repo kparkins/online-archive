@@ -25,7 +25,7 @@
               --username "{{ atlas_proj_pub_key }}"
               --password "{{ atlas_proj_priv_key }}"
               --authenticationDatabase admin
-              --eval "use('education'); db.{{ atlas_collection_name }}.countDocuments()"
+              --eval "use('{{ atlas_database_name }}'); db.{{ atlas_collection_name }}.countDocuments()"
     register: unarchived_count
 
   - name: Count the number of documents in the archive. 
@@ -34,7 +34,7 @@
               --username "{{ atlas_proj_pub_key }}"
               --password "{{ atlas_proj_priv_key }}"
               --authenticationDatabase admin
-              --eval "use('education'); db.{{ atlas_collection_name }}.countDocuments()"
+              --eval "use('{{ atlas_database_name }}'); db.{{ atlas_collection_name }}.countDocuments()"
     register: archived_count
   
   - name: Show count of un-archived and archived documents
