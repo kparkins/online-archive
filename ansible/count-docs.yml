@@ -16,11 +16,12 @@
 
   - name: Parse JSON and get the connection string 
     set_fact:
+      atlas_srv_connection_string: "{{ (curl_response.stdout | from_json)['srvAddress'] }}"
       atlas_archive_connection_string: "{{ (curl_response.stdout | from_json)['connectionStrings']['onlineArchive'] }}"
 
   - name: Count the number of documents not in the archive. 
     command: >
-      mongosh "{{ atlas_archive_connection_string }}/{{ atlas_database_name }}"
+      mongosh "{{ atlas_srv_connection_string }}/{{ atlas_database_name }}"
               --username "{{ atlas_proj_pub_key }}"
               --password "{{ atlas_proj_priv_key }}"
               --authenticationDatabase admin
