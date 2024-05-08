@@ -1,6 +1,6 @@
 # Online Archive with Terraform
 
-This is a small repository designed to use terraform and ansible to setup and provision a cluster in a single region with Online Archive. It uses the format outlined in (the Atlas sizing lab)[https://docs.google.com/document/d/1X0cLZtQZ19OAqCwxSeF5b5vc4mtR2MUeqvArwhS_XEE/edit]. 
+This is a small repository designed to use terraform and ansible to setup and provision a cluster in a single region with Online Archive. It uses the format outlined in [The Atlas Sizing Lab](https://docs.google.com/document/d/1X0cLZtQZ19OAqCwxSeF5b5vc4mtR2MUeqvArwhS_XEE/edit). 
 
 ## Directions
 
