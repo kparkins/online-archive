@@ -14,8 +14,8 @@ cp atlas.tfvars.json.sample atlas.tfvars.json
 Next, initialize and run the terraform script.
 ```bash
 terraform init
-terraform plan -var-file=@atlas.tfvars.json
-terraform apply -var-file=@atlas.tfvars.json
+terraform plan -var-file=atlas.tfvars.json
+terraform apply -var-file=atlas.tfvars.json
 ```
 
 It will take around 10-12 minutes to setup the cluster. 
@@ -25,7 +25,7 @@ It will take around 10-12 minutes to setup the cluster.
 Run the corresponding `terraform destroy` command to cleanup all the resources.
 
 ```bash
-terraform destroy -var-file=@atlas.tfvars.json
+terraform destroy -var-file=atlas.tfvars.json
 ```
 
 ## Counting Documents
