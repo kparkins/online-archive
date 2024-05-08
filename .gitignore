@@ -3,3 +3,4 @@
 *.tfstate*
 atlas.tfvars
 atlas.tfvars.json
+ansible/scripts/*.js

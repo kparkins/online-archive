@@ -4,10 +4,20 @@
   gather_facts: no
   vars:
     local_data_file: "../data/student_grades.json"
-    local_fix_dates_file: "../data/fix-dates.js"
-    local_create_index_file: "../data/create-index.js"
+    local_fix_dates_file: "../ansible/scripts/fix-dates.js"
+    local_create_index_file: "../ansible/scripts/create-index.js"
 
   tasks:
+  - name: Template the fix-dates.js script
+    template:
+      src: ../ansible/scripts/fix-dates.js.j2
+      dest: "{{ local_fix_dates_file }}" 
+
+  - name: Template the create-index.js script
+    template:
+      src: ../ansible/scripts/create-index.js.j2
+      dest: "{{ local_create_index_file }}" 
+
   - name: Import data into MongoDB using mongoimport
     command: >
       mongoimport --uri "{{ atlas_connection_string }}/{{ atlas_database_name }}"
@@ -30,4 +40,3 @@
               --file "{{ local_create_index_file }}"
               --username "{{ atlas_proj_pub_key }}"
               --password "{{ atlas_proj_priv_key }}"
-

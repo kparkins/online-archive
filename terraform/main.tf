@@ -6,16 +6,11 @@ resource "mongodbatlas_cluster" "archive_cluster" {
   provider_name             = "AWS"
   provider_region_name      = "US_WEST_2"
 
-
   provisioner "local-exec" {
    command =<<EOF
-      ansible-playbook -v -i ../ansible/inventory.yml ../ansible/load-data.yml --extra-vars '{
-        "mongo_username": "${var.atlas_proj_pub_key}",
-        "mongo_password": "${var.atlas_proj_priv_key}", 
-        "mongo_database_name": "${var.atlas_database_name}",
-        "mongo_collection_name": "${var.atlas_collection_name}",
-        "mongo_connection_string": "${mongodbatlas_cluster.archive_cluster.connection_strings[0].standard_srv}"
-      }'
+      ansible-playbook -v -i ../ansible/inventory.yml ../ansible/load-data.yml \
+        --extra-vars '@atlas.tfvars.json' \
+        --extra-vars atlas_connection_string=${mongodbatlas_cluster.archive_cluster.connection_strings[0].standard_srv}
 EOF
   }
 

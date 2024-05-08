@@ -1,9 +1,9 @@
-use('education')
+use('{{ atlas_database_name }}')
 
 function fixDates() {
-    let maxdate = db.grades.aggregate([{
+    let maxdate = db.{{ atlas_collection_name }}.aggregate([{
             "$sort": {
-                "date_completed": -1
+                "{{ atlas_archive_date_field }}": -1
             }
         },
         {
@@ -11,7 +11,7 @@ function fixDates() {
         },
         {
             "$project": {
-                "max_date_completed": "$date_completed",
+                "max_date_completed": "${{ atlas_archive_date_field }}",
                 "_id": 0
             }
         }
@@ -40,14 +40,14 @@ function fixDates() {
                         }
                     }
                 },
-                "date_completed": {
+                "{{ atlas_archive_date_field }}": {
                     "$cond": {
                         "if": {
                             "$eq": ["$status", "complete"]
                         },
                         "then": {
                             "$dateAdd": {
-                                "startDate": "$date_completed",
+                                "startDate": "${{ atlas_archive_date_field }}",
                                 "unit": "day",
                                 "amount": {
                                     "$subtract": ["$diff", 1]
@@ -66,7 +66,7 @@ function fixDates() {
     ];
 
 
-    result = db.grades.updateMany({}, pipeline)
+    result = db.{{ atlas_collection_name }}.updateMany({}, pipeline)
     console.log(JSON.stringify(result))
 }
 

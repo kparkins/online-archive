@@ -1,0 +1,8 @@
+
+use('{{ atlas_database_name }}')
+// Connect to the specific database
+if(!db.{{ atlas_collection_name }}.getIndexes().some((index) => index.key["{{ atlas_archive_date_field }}"] === 1)) {
+  db.grades.createIndex({ "{{ atlas_archive_date_field }}": 1 })
+}
+
+
