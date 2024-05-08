@@ -4,11 +4,13 @@ This is a small repository designed to use terraform and ansible to setup and pr
 
 ## Directions
 
-First, copy the tfvars file and fill it in with your details.
+First, make sure you have `ansible`, `terraform`, `mongosh` and `mongoimport` installed on your local machine.
+
+Next, copy the tfvars file and fill it in with your details.
 ```bash
 cp atlas.tfvars.sample atlas.tfvars
 ```
-Next, initialize and run the terraform scrip.
+Next, initialize and run the terraform script.
 ```bash
 terraform init
 terraform plan -var-file=atlas.tfvars
