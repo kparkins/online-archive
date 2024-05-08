@@ -21,7 +21,35 @@ EOF
 
 }
 
-/*resource "null_resource" "example" {
+resource "mongodbatlas_online_archive" "archive" {
+  project_id   = var.atlas_proj_id 
+  cluster_name = mongodbatlas_cluster.archive_cluster.name
+  db_name      = var.atlas_archive_db
+  coll_name = var.atlas_archive_collection
+
+  criteria {
+    type = "DATE"
+    date_field = var.atlas_archive_date_field 
+    expire_after_days = 7
+  }
+
+ dynamic "partition_fields" {
+    for_each = var.atlas_archive_partition_fields
+    content {
+      field_name = partition_fields.value.field_name
+      order      = partition_fields.value.order
+    }
+  } 
+
+  provisioner "local-exec" {
+    #command = "ansible-playbook -i localhost, ../ansible/count_docs.yml --extra-vars 'cluster_host=${mongodbatlas_cluster.my_cluster.connection_strings.standard}'"
+    command = "echo 'archive provision ran'"
+  }
+}
+
+
+/* Uncomment and use this to test your ansible playbook changes
+  resource "null_resource" "example" {
   triggers = {
     always_run = "${timestamp()}"
   }
@@ -39,35 +67,3 @@ EOF
   }
 }
 */
-
-resource "mongodbatlas_online_archive" "archive" {
-  project_id   = var.atlas_proj_id 
-  cluster_name = mongodbatlas_cluster.archive_cluster.name
-  db_name      = var.atlas_archive_db
-  coll_name = var.atlas_archive_collection
-
-  criteria {
-    type = "DATE"
-    date_field = var.atlas_archive_date_field 
-    expire_after_days = 7
-  }
-
-  # partition_fields {
-  #   field_name = var.atlas_archive_date_field 
-  #   order = 0
-  # }
-
- dynamic "partition_fields" {
-    for_each = var.atlas_archive_partition_fields
-    content {
-      field_name = partition_fields.value.field_name
-      order      = partition_fields.value.order
-    }
-  } 
-
-  provisioner "local-exec" {
-    #command = "ansible-playbook -i localhost, ../ansible/count_docs.yml --extra-vars 'cluster_host=${mongodbatlas_cluster.my_cluster.connection_strings.standard}'"
-    command = "echo 'archive provision ran'"
-  }
-}
-
