@@ -41,10 +41,6 @@ resource "mongodbatlas_online_archive" "archive" {
     }
   } 
 
-  provisioner "local-exec" {
-    #command = "ansible-playbook -i localhost, ../ansible/count_docs.yml --extra-vars 'cluster_host=${mongodbatlas_cluster.my_cluster.connection_strings.standard}'"
-    command = "echo 'archive provision ran'"
-  }
 }
 
 
