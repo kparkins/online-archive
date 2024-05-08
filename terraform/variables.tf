@@ -38,12 +38,12 @@ variable "atlas_cluster_name" {
     type = string
 }
 
-variable "atlas_archive_collection" {
+variable "atlas_collection_name" {
     description = "The collection to use with Online Archive"
     type = string
 }
 
-variable "atlas_archive_db" {
+variable "atlas_database_name" {
     description = "The database to use with Online Archive"
     type = string
 }

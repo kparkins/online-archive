@@ -12,8 +12,8 @@ resource "mongodbatlas_cluster" "archive_cluster" {
       ansible-playbook -v -i ../ansible/inventory.yml ../ansible/load-data.yml --extra-vars '{
         "mongo_username": "${var.atlas_proj_pub_key}",
         "mongo_password": "${var.atlas_proj_priv_key}", 
-        "mongo_database_name": "${var.atlas_archive_db}",
-        "mongo_collection_name": "${var.atlas_archive_collection}",
+        "mongo_database_name": "${var.atlas_database_name}",
+        "mongo_collection_name": "${var.atlas_collection_name}",
         "mongo_connection_string": "${mongodbatlas_cluster.archive_cluster.connection_strings[0].standard_srv}"
       }'
 EOF
@@ -24,8 +24,8 @@ EOF
 resource "mongodbatlas_online_archive" "archive" {
   project_id   = var.atlas_proj_id 
   cluster_name = mongodbatlas_cluster.archive_cluster.name
-  db_name      = var.atlas_archive_db
-  coll_name = var.atlas_archive_collection
+  db_name      = var.atlas_database_name
+  coll_name = var.atlas_collection_name
 
   criteria {
     type = "DATE"

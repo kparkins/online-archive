@@ -1,19 +1,42 @@
 ---
-- name: Count Documents in MongoDB Atlas
+- name: Count Documents in atlasDB Atlas
   hosts: all
   gather_facts: no
+  vars:
+    atlas_base_url: "https://cloud.mongodb.com/api/atlas/v1.0"
 
   tasks:
-    - name: Count Un-archived Documents
-      shell: |
-        mongo "mongodb+srv://{{ cluster_host }}/test" --eval 'db.movies.count()'
-      register: unarchived_count
+  - name: Call atlasDB Atlas API with Curl
+    command: >
+      curl --user "{{ atlas_org_pub_key }}:{{ atlas_org_priv_key }}" \
+      --digest \
+      --header "Content-Type: application/json" \
+      --request GET "{{ atlas_base_url }}/groups/{{ atlas_proj_id }}/clusters/{{ atlas_cluster_name }}"
+    register: curl_response
 
-    - name: Count Archived Documents
-      shell: |
-        mongo "mongodb+srv://{{ cluster_host }}/archive" --eval 'db.movies.count()'
-      register: archived_count
+  - name: Parse JSON and get the connection string 
+    set_fact:
+      atlas_archive_connection_string: "{{ (curl_response.stdout | from_json)['connectionStrings']['onlineArchive'] }}"
 
-    - debug:
-        msg: "Un-archived documents: {{ unarchived_count.stdout }}, Archived documents: {{ archived_count.stdout }}"
+  - name: Count the number of documents not in the archive. 
+    command: >
+      mongosh "{{ atlas_archive_connection_string }}/{{ atlas_database_name }}"
+              --username "{{ atlas_proj_pub_key }}"
+              --password "{{ atlas_proj_priv_key }}"
+              --authenticationDatabase admin
+              --eval "use('education'); db.{{ atlas_collection_name }}.countDocuments()"
+    register: unarchived_count
+
+  - name: Count the number of documents in the archive. 
+    command: >
+      mongosh "mongodb://archived-{{ atlas_archive_connection_string[10:] }}/{{ atlas_database_name }}"
+              --username "{{ atlas_proj_pub_key }}"
+              --password "{{ atlas_proj_priv_key }}"
+              --authenticationDatabase admin
+              --eval "use('education'); db.{{ atlas_collection_name }}.countDocuments()"
+    register: archived_count
+  
+  - name: Show count of un-archived and archived documents
+    debug:
+      msg: "Un-archived documents: {{ unarchived_count.stdout }}, Archived documents: {{ archived_count.stdout }}"
 

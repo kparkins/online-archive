@@ -1,13 +1,8 @@
 ---
-- name: Setup MongoDB Atlas Cluster
+- name: Setup atlasDB Atlas Cluster
   hosts: all
   gather_facts: no
   vars:
-    mongo_username: ""
-    mongo_password: ""
-    mongo_database_name: ""
-    mongo_collection_name: ""
-    mongo_connection_string: ""
     local_data_file: "../data/student_grades.json"
     local_fix_dates_file: "../data/fix-dates.js"
     local_create_index_file: "../data/create-index.js"
@@ -15,24 +10,24 @@
   tasks:
   - name: Import data into MongoDB using mongoimport
     command: >
-      mongoimport --uri "{{ mongo_connection_string }}/{{ mongo_database_name }}"
-                  --username "{{ mongo_username }}"
-                  --password "{{ mongo_password }}"
-                  --collection "{{ mongo_collection_name }}"
+      mongoimport --uri "{{ atlas_connection_string }}/{{ atlas_database_name }}"
+                  --username "{{ atlas_proj_pub_key }}"
+                  --password "{{ atlas_proj_priv_key }}"
+                  --collection "{{ atlas_collection_name }}"
                   --file "{{ local_data_file }}"
                   --type json
 
-  - name: Execute the fix-dates.js JavaScript file using mongosh
+  - name: Execute the fix-dates.js JavaScript file using atlassh
     command: >
-      mongosh "{{ mongo_connection_string }}/{{ mongo_database_name }}"
+      mongosh "{{ atlas_connection_string }}/{{ atlas_database_name }}"
               --file "{{ local_fix_dates_file }}"
-              --username "{{ mongo_username }}"
-              --password "{{ mongo_password }}"
+              --username "{{ atlas_proj_pub_key }}"
+              --password "{{ atlas_proj_priv_key }}"
 
-  - name: Execute create-index.js JavaScript file using mongosh
+  - name: Execute create-index.js JavaScript file using atlassh
     command: >
-      mongosh "{{ mongo_connection_string }}/{{ mongo_database_name }}"
+      mongosh "{{ atlas_connection_string }}/{{ atlas_database_name }}"
               --file "{{ local_create_index_file }}"
-              --username "{{ mongo_username }}"
-              --password "{{ mongo_password }}"
+              --username "{{ atlas_proj_pub_key }}"
+              --password "{{ atlas_proj_priv_key }}"
 
