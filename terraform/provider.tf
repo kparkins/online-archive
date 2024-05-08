@@ -11,4 +11,3 @@ provider "mongodbatlas" {
   public_key  = var.atlas_org_pub_key
   private_key = var.atlas_org_priv_key
 }
-

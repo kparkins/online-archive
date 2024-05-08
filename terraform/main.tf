@@ -37,22 +37,3 @@ resource "mongodbatlas_online_archive" "archive" {
   } 
 
 }
-
-# # Uncomment and use this to test your ansible playbook changes
-#   resource "null_resource" "example" {
-#   triggers = {
-#     always_run = "${timestamp()}"
-#   }
-
-#   provisioner "local-exec" {
-#    command =<<EOF
-#       ansible-playbook -v -i ../ansible/inventory.yml ../ansible/load-data.yml --extra-vars '{
-#         "mongo_username": "${var.atlas_proj_pub_key}",
-#         "mongo_password": "${var.atlas_proj_priv_key}", 
-#         "mongo_database_name": "${var.atlas_archive_db}",
-#         "mongo_collection_name": "${var.atlas_archive_collection}",
-#         "mongo_connection_string": "${mongodbatlas_cluster.archive_cluster.connection_strings[0].standard_srv}"
-#       }'
-# EOF
-#   }
-# }
