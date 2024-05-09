@@ -1,27 +1,32 @@
 {
-"atlas_org_pub_key": "<org pub key>",
-"atlas_org_priv_key": "<org priv key>",
-"atlas_proj_pub_key": "<project public portion of api key>",
-"atlas_proj_priv_key": "<project private portion of api key>",
-"atlas_org_id": "<organization id>",
-"atlas_proj_id": "<project id>",
-"atlas_proj_name": "<project name>",
-"atlas_cluster_name": "archive-cluster-1",
-"atlas_database_name": "education",
-"atlas_collection_name": "grades",
-"atlas_archive_date_field": "date_completed",
-"atlas_archive_partition_fields": [
-  {
-    "field_name": "date_completed",
-    "order": 0
-  },
-  {
-    "field_name": "student_name.last",
-    "order": 1
-  },
-  {
-    "field_name": "assignment_name",
-    "order": 2
-  }
-]
+  "atlas_org_pub_key": "<org pub key>",
+  "atlas_org_priv_key": "<org priv key>",
+  "atlas_proj_pub_key": "<project public portion of api key>",
+  "atlas_proj_priv_key": "<project private portion of api key>",
+  "atlas_org_id": "<organization id>",
+  "atlas_proj_id": "<project id>",
+  "atlas_proj_name": "<project name>",
+  "atlas_cluster_name": "archive-cluster-1",
+  "atlas_cluster_disk_size_gb": 10,
+  "atlas_cluster_provider_name": "AWS",
+  "atlas_cluster_provider_region_name": "US_WEST_2",
+  "atlas_cluster_provider_instance_size": "M10",
+  "atlas_database_name": "education",
+  "atlas_collection_name": "grades",
+  "atlas_archive_date_field": "date_completed",
+  "atlas_archive_expire_after_days": 7,
+  "atlas_archive_partition_fields": [
+    {
+      "field_name": "date_completed",
+      "order": 0
+    },
+    {
+      "field_name": "student_name.last",
+      "order": 1
+    },
+    {
+      "field_name": "assignment_name",
+      "order": 2
+    }
+  ]
 }

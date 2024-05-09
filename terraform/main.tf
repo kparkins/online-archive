@@ -1,10 +1,10 @@
 resource "mongodbatlas_cluster" "archive_cluster" {
   project_id                = var.atlas_proj_id 
   name                      = var.atlas_cluster_name 
-  disk_size_gb              = 10
-  provider_instance_size_name = "M10"
-  provider_name             = "AWS"
-  provider_region_name      = "US_WEST_2"
+  disk_size_gb              = var.atlas_cluster_disk_size_gb
+  provider_instance_size_name = var.atlas_cluster_provider_instance_size
+  provider_name             = var.atlas_cluster_provider_name
+  provider_region_name      = var.atlas_cluster_provider_region_name
 
   provisioner "local-exec" {
    command =<<EOF
@@ -13,7 +13,6 @@ resource "mongodbatlas_cluster" "archive_cluster" {
         --extra-vars atlas_connection_string=${mongodbatlas_cluster.archive_cluster.connection_strings[0].standard_srv}
 EOF
   }
-
 }
 
 resource "mongodbatlas_online_archive" "archive" {
@@ -25,7 +24,7 @@ resource "mongodbatlas_online_archive" "archive" {
   criteria {
     type = "DATE"
     date_field = var.atlas_archive_date_field 
-    expire_after_days = 7
+    expire_after_days = var.atlas_archive_expire_after_days
   }
 
  dynamic "partition_fields" {
@@ -35,5 +34,4 @@ resource "mongodbatlas_online_archive" "archive" {
       order      = partition_fields.value.order
     }
   } 
-
 }
